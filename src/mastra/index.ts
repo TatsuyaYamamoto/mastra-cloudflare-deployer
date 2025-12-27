@@ -6,6 +6,7 @@ import { Observability } from '@mastra/observability';
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
+import { CloudflareDeployer } from "@mastra/deployer-cloudflare";
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
@@ -23,5 +24,11 @@ export const mastra = new Mastra({
   observability: new Observability({
     // Enables DefaultExporter and CloudExporter for tracing
     default: { enabled: true },
+  }),
+  deployer: new CloudflareDeployer({
+    projectName: "mastra-cloudflare-deployer",
+    env: {
+      NODE_ENV: "production",
+    },
   }),
 });
